@@ -7,25 +7,29 @@
 
 #define	BUF_SIZE_GRAIN	32
 
+const char word_delimiters[] = { ' ', '\t', '\n', '\0' };
+
 /**
  *  Input a word up to wd_size chars, including the terminating NUL
  *  If wd_size is 0, storage is allocated for the word as needed.
  *  The caller should handle cleanup
+ *  The returned word can be one of:
+ *  	(1) a sequence of non-delimiter chars
+ *  	(2) a sequence of delimiters
+ *  Return value is 0 for EOF or error, positive value for length of
+ *  a word, otherwise a negative value for length of delimiter sequence
  */
-char* getword(FILE *f, size_t wd_size)
+ssize_t getword(FILE *f, char **wptr, const size_t wd_size)
 {
 	size_t len = 0, buf_len;
 	char *buf;
-	int c;
+	int c, in_word = 0;
 
-	if (wd_size)
-		buf_len = wd_size;
-	else
-		buf_len = BUF_SIZE_GRAIN;
+	if (f == NULL || feof(f) || wptr == NULL)
+		return 0;
 
-	if (f == NULL || feof(f))
-		return NULL;
-	assert((buf = malloc(buf_len)) != NULL);
+	buf_len = wd_size ? wd_size : BUF_SIZE_GRAIN;
+	assert((buf = *wptr = malloc(buf_len)) != NULL);
 
 	while (!feof(f)) {
 		if (len == buf_len-1) {
@@ -33,28 +37,45 @@ char* getword(FILE *f, size_t wd_size)
 				break;
 			else {
 				buf_len += BUF_SIZE_GRAIN;
-				assert((buf = realloc(buf, buf_len)) != NULL);
+				assert((buf = *wptr = realloc(buf, buf_len)) != NULL);
 			}
 		}
 		c = fgetc(f);
-		if (c == ' ' || c == '\t' || c == '\n')
-			break;
-		else
+		if (strchr(word_delimiters, c)) {
+			if (in_word) {
+				ungetc(c, f);
+				break;
+			} else /* append to delimiter 'word' */
+				buf[len++] = c;
+		} else {
+			if (!in_word) {
+				if (len > 0) { /* end of delimiter 'word' */
+					ungetc(c, f);
+					break;
+				} else
+					in_word = 1;
+			}
 			buf[len++] = c;
+		}
 	}
 
 	buf[len] = '\0';
-	return buf;
+	return in_word ? len : -len;
 }
+
 
 int main()
 {
-	char *w;
+	char *w = NULL;
+	ssize_t len;
 
-	while (w = getword(stdin, 0)) {
-		size_t len = strlen(w);
-		fprintf(stdout, "Word (%d): \"%s\"\n", len, w);
-		free(w);
+	while (len = getword(stdin, &w, 0)) {
+		if (len > 0)
+			fprintf(stdout, "Word (%zu): \"%s\"\n", len, w);
+		else
+			fprintf(stdout, "Blank (%zu)\n", -len);
+		if (w)
+			free(w);
 	}
 
 	return 0;
