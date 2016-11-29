@@ -98,10 +98,9 @@ size_t print_substring(const char *from, const char *to)
 	return len;
 }
 
-#define	TABSTOP	8
 #define	MIN(a,b) ( (a) < (b) ? (a) : (b) )
 
-void fold_line(const char *line, int COLUMNS)
+void fold_line(const char *line, int COLUMNS, int TABSTOP)
 {
 	const char *ptr, *eol;
 	int cur_col = 1;
@@ -155,14 +154,26 @@ void fold_line(const char *line, int COLUMNS)
 	}
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	char *line = NULL;
+	int column_opt = 80;
+	int tabstop_opt = 8;
 	ssize_t len;
+
+	if (argc > 1)
+		column_opt = atoi(argv[1]);
+	if (argc > 2)
+		tabstop_opt = atoi(argv[2]);
+
+	if (column_opt < 1 || tabstop_opt < 2) {
+		fprintf(stderr, "Usage: %s [columns] [tabstops]\n", *argv);
+		return EXIT_FAILURE;
+	}
 
 	while (len = read_line(stdin, &line, 0)) {
 		if (len > 0)
-			fold_line(line, 10);
+			fold_line(line, column_opt, tabstop_opt);
 		else
 			/* reduce consecutive blank lines into one */
 			fputc('\n', stdout);
@@ -170,6 +181,6 @@ int main()
 			free(line);
 	}
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 
