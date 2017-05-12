@@ -19,7 +19,8 @@ void expand(const char *s1, char *s2)
 				fprintf(stderr, "error: illegal shared endpoint\n");
 				break;;
 			} else {
-				for (char x=prev_char; x<=*s1; x++)
+				register char x;
+				for (x=prev_char; x<=*s1; x++)
 					*s2++ = x;
 				prev_isendpoint = 1;
 				s1++;
