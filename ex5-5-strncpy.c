@@ -11,7 +11,6 @@
  *  The strncpy function returns the value of s1.
  */
 
-#include <stdio.h>
 
 char *strncpy(char *dest, const char *src, size_t n) {
 	char *const retv = dest;
@@ -24,6 +23,7 @@ char *strncpy(char *dest, const char *src, size_t n) {
 
 /* Compile with -D_TEST_ -fno-builtin */
 #if defined(_TEST_)
+#include <stdio.h>
 int main() {
 	char d[3], s[3] = "12";
 	fprintf(stdout, "%s\n", strncpy(d, "12", sizeof(d)));
