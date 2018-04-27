@@ -4,7 +4,7 @@
 
 typedef int (*cmpFun)(const char *, const char *);
 
-void qsort(char *argv[], int left, int right, cmpFun cmp);
+void quicksort(char *argv[], int left, int right, cmpFun cmp);
 
 #endif	/* _QSORT_H */
 
