@@ -1,7 +1,7 @@
 
 INCDIR=include/
 CFLAGS+=-I$(INCDIR) -g
-LDFLAGS+=-fsanitize=address
+#LDFLAGS+=-fsanitize=address
 
 sort: sort.o argv.o qsort.o
 

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-static int getline(char s[], int maxlen)
+static int get_line(char s[], int maxlen)
 {
 	int c, i;
 
@@ -11,8 +11,10 @@ static int getline(char s[], int maxlen)
 	while ((c = getchar()) != EOF) {
 		if (c == '\n' || c == EOF)
 			break;
-		if (i >= maxlen-1)
+		if (i >= maxlen-1) {
+			ungetc(c, stdin);
 			break;
+		}
 		s[i++] = c;
 	}
 
