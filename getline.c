@@ -21,7 +21,7 @@ int getline(char s[], int maxlen)
 
 void copy(char dest[], char src[])
 {
-	register int i;
+	register int i = 0;
 	while ((dest[i] = src[i]) != '\0')
 		i++;
 }

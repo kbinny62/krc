@@ -52,7 +52,7 @@ void unescape(char *dst, const char *src)
 
 int main(int argc, char *argv[])
 {
-	char *buf, *buf2;
+	char *buf = NULL, *buf2 = NULL;
 
 	if (argc < 2) {
 		fprintf(stderr, "Usage: %s FILE\n", argv[0]);
@@ -75,6 +75,9 @@ int main(int argc, char *argv[])
 		unescape(buf, buf2);
 		fprintf(stdout, "\nOriginal:\n%s\n", buf);
 		fclose(fp);
+
+		free(buf);
+		free(buf2);
 	}
 
 	return 0;
