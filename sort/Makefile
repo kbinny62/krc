@@ -4,7 +4,7 @@ CFLAGS+=$(INCDIRS) -g
 #LDFLAGS+=-fsanitize=address
 
 sort: sort.o ../external/argv/argv.o qsort.o
-	$(LD) $(LDFLAGS) $+ -o $@
+	$(CC) $(CFLAGS) $+ -o $@ $(LDFLAGS)
 
 .PHONY: ../external/argv/argv.o
 ../external/argv/argv.o:
