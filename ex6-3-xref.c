@@ -192,14 +192,14 @@ static int sort_pred(const char **s1, const char **s2) {
 int main(int argc, char *argv[]) {
 	struct tnode *root = NULL;
 	char word[BUFSIZ];
-	unsigned doGraphviz = 1;
+	unsigned do_graphviz = 1;
 	unsigned line_num = 1;
 	int opt;
 
 	while ((opt = getopt(argc, argv, "a")) != -1) {
 		switch (opt) {
 			case 'a':
-				doGraphviz = 0;
+				do_graphviz = 0;
 				break;
 			default:
 				fprintf(stderr,
@@ -235,7 +235,7 @@ int main(int argc, char *argv[]) {
 			root = addtree(root, word, line_num);
 	}
 
-	treeprint(stdout, root, 0, doGraphviz);
+	treeprint(stdout, root, 0, do_graphviz);
 	argv_free(noisevec);
 	treefree(&root);
 	return 0;

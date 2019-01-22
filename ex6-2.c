@@ -194,13 +194,13 @@ int main(int argc, char *argv[]) {
 	struct tnode *root = NULL;
 	char word[BUFSIZ], *eptr;
 	unsigned prefix_len = DEFAULT_PFXLEN;
-	unsigned doGraphviz = 1;
+	unsigned do_graphviz = 1;
 	int opt;
 
 	while ((opt = getopt(argc, argv, "n:a")) != -1) {
 		switch (opt) {
 			case 'a':
-				doGraphviz = 0;
+				do_graphviz = 0;
 				break;
 			case 'n':
 				prefix_len = strtoul(optarg, &eptr, 0);
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
 			root = addtree(root, word, prefix_len);
 	}
 
-	treeprint(stdout, root, 0, doGraphviz);
+	treeprint(stdout, root, 0, do_graphviz);
 	treefree(&root);
 	return 0;
 }
