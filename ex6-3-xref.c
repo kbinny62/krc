@@ -14,15 +14,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
+
+#ifdef _MSC_VER
+#define strdup _strdup
+#define strcasecmp _stricmp
+#include "external/getopt_port/getopt.c"
+#endif
 
 #include "external/argv/argv.c"
 
-/**
- * @const default prefix length, runtime value alterable through -n command line option
- */
 static struct argv *noisevec = NULL;
-
 const char NOISEFILE[] = "DATASETS/ex6-3-noisewords.txt"; /* relative to curdir */
 
 struct tnode {
@@ -102,11 +103,9 @@ struct tnode *addtree(struct tnode *n, const char *word, unsigned cur_line) {
 
 	if (n == NULL) {
 		n = talloc();
-		n->word = malloc(sizeof(char) * BUFSIZ);
+		n->word = strdup(word);
 		n->linerefs = argv_init();
 		assert(n != NULL && n->word != NULL && n->linerefs != NULL);
-		strncpy(n->word, word, BUFSIZ-1);
-		n->word[BUFSIZ-1] = '\0';
 		argv_append(n->linerefs, buf_linenum);
 		n->left = n->right = NULL;
 	} else if ((cmp = strcasecmp(word, n->word)) == 0) {

@@ -1,3 +1,6 @@
 [submodule "external/argv"]
 	path = external/argv
 	url = https://github.com/cval-c4q/argv.git
+[submodule "external/getopt_port"]
+	path = external/getopt_port
+	url = https://github.com/kimgr/getopt_port
