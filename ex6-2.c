@@ -19,8 +19,6 @@
 
 #include "external/argv/argv.c"
 
-#define max(a,b) (a) < (b) ? (b) : (a)
-
 /**
  * @const default prefix length, runtime value alterable through -n command line option
  */

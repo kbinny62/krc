@@ -1,9 +1,8 @@
 
 /**
- *  NOTE: instead of displaying alphanumerically-sorted word groups with common prefixes
- *        as requested in the problem statement, this program produces GraphViz output by
- *        default. A sample SVG rendering of such output is attached to the repository
- *        along with the data used to generate it (50 first words from Webster's dict).
+ *  NOTE: This program produces GraphViz output by default. A sample SVG rendering
+ *        of such output is attached to the repository along with the data used to
+ *        generate it (main text of The U.S Declaration of Independence).
  *        Plain ASCII output can be forced with the '-a' command line option.
  *
  */
